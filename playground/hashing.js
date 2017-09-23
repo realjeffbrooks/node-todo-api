@@ -1,18 +1,44 @@
 const {SHA256} = require('crypto-js');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-var data = {
-  id: 4,
-  name: 'blah',
-  bool: false,
-  pwd: 'pwd123'
-};
+var password = '123abc!';
 
-var token = jwt.sign(data, '123abc');
-console.log(token);
+// bcrypt.genSalt(10, (err, salt) => {
+//   bcrypt.hash(password, salt, (err, hash) => {
+//     console.log(hash);
+//   });
+// });
 
-var decoded = jwt.verify(token, '123abc');
-console.log('decoded', decoded);
+bcrypt.genSalt(10).then((salt) => {
+  bcrypt.hash(password, salt).then((hash) => {
+    console.log(hash);
+  }); 
+}).catch((e) => {
+  
+});
+
+
+var hashedPassword = '$2a$10$pkmRgqTYX5Rb6xgLGmGZhOM0qL1V06X9Na5KU8uCjfioGmheofTvK';
+
+bcrypt.compare(password, hashedPassword).then((match) => {
+  console.log(match);
+});
+
+
+
+// var data = {
+//   id: 4,
+//   name: 'blah',
+//   bool: false,
+//   pwd: 'pwd123'
+// };
+
+// var token = jwt.sign(data, '123abc');
+// console.log(token);
+
+// var decoded = jwt.verify(token, '123abc');
+// console.log('decoded', decoded);
 
 // var message = 'I am user number 3';
 // console.log(`Message: ${message}`);
@@ -36,4 +62,5 @@ console.log('decoded', decoded);
 // } else {
 //   console.log('Data was changed - do not trust');
 // }
+
 
