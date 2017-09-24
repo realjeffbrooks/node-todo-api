@@ -1,6 +1,7 @@
 const expect = require('expect');
 const request = require('supertest');
 const {ObjectID} = require('mongodb');
+var mongoose = require('mongoose');
 
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
@@ -14,11 +15,17 @@ beforeEach(populateTodos);
 
 describe('POST /todos', () => {
   it('should create a new todo', (done) => {
+    var _creator = '59c81aa3bfd36f4906a8febc';
     var text = 'Test todo text';
+
+    var todo = {
+      text,
+      _creator
+    };
 
     request(app)
       .post('/todos')
-      .send({text})
+      .send({todo})
       .expect(200)
       .expect((res) => {
         expect(res.body.text).toBe(text);
